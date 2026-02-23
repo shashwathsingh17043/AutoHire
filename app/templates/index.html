@@ -6,8 +6,8 @@
 <body>
     <h2>AutoHire Resume Screening</h2>
 
-    <form method="post">
-        <textarea name="resume" rows="10" cols="50"></textarea>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="resume_file">
         <br><br>
         <button type="submit">Analyze Resume</button>
     </form>
