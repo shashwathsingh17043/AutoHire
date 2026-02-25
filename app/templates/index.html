@@ -4,16 +4,20 @@
     <title>AutoHire Resume Screening</title>
 </head>
 <body>
-    <h2>AutoHire Resume Screening</h2>
 
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="resume_file">
+    <h1>AutoHire Resume Screening</h1>
+
+    <p>Upload your resume (PDF supported)</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".pdf">
         <br><br>
         <button type="submit">Analyze Resume</button>
     </form>
 
     {% if score %}
-        <h3>Resume Score: {{ score }}%</h3>
+        <h2>Resume Score: {{ score }}%</h2>
     {% endif %}
+
 </body>
 </html>
