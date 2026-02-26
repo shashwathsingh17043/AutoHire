@@ -1,100 +1,217 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AutoHire Resume Screening</title>
+    <title>AutoHire AI Dashboard</title>
 
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #4e73df, #1cc88a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .card {
-            background: white;
-            width: 420px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        input[type="file"] {
-            margin-top: 15px;
-        }
-
-        button {
-            margin-top: 20px;
-            background-color: #4e73df;
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            font-size: 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
             transition: 0.3s;
         }
 
-        button:hover {
-            background-color: #2e59d9;
+        body {
+            margin: 0;
+            background: #020617;
+            color: white;
+            overflow-x: hidden;
         }
 
-        .result {
-            margin-top: 20px;
+        /* INTRO ANIMATION */
+        #intro {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: cyan;
+            border-radius: 50%;
+            position: absolute;
+            animation: merge 2s ease-in-out forwards;
+        }
+
+        @keyframes merge {
+            to {
+                transform: translate(0,0) scale(0);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: cyan;
+            margin-top: 30px;
+        }
+
+        .upload-box {
+            width: 480px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0,255,255,0.15);
+        }
+
+        button {
+            width: 100%;
             padding: 12px;
-            border-radius: 6px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, cyan, blue);
+            color: white;
             font-weight: bold;
+            cursor: pointer;
         }
 
-        .score {
-            background-color: #e6ffed;
-            color: #1e7e34;
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px cyan;
         }
 
-        footer {
-            margin-top: 15px;
+        input {
+            margin: 15px 0;
+        }
+
+        .results {
+            width: 70%;
+            margin: auto;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.04);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .top {
+            border: 1px solid lime;
+            box-shadow: 0 0 25px rgba(0,255,0,0.25);
+        }
+
+        .progress {
+            height: 8px;
+            background: #111;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .bar {
+            height: 100%;
+            background: linear-gradient(90deg, cyan, blue);
+        }
+
+        .circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 6px solid cyan;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(0,255,255,0.1);
+            margin: 4px;
+            color: cyan;
             font-size: 12px;
-            color: #999;
+        }
+
+        .toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: cyan;
+            color: black;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .light {
+            background: #f4f6f8;
+            color: black;
         }
     </style>
 </head>
 
 <body>
 
-<div class="card">
-    <h1>AutoHire Resume Screening</h1>
-    <p>Upload your resume (PDF) to evaluate job fit</p>
+<div id="intro"></div>
 
+<div class="toggle" onclick="toggleTheme()">Toggle Theme</div>
+
+<h1>AutoHire AI Ranking Dashboard</h1>
+
+<div class="upload-box">
+    <h3>Upload Candidate Resumes</h3>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="resume" accept=".pdf" required>
-        <button type="submit">Analyze Resume</button>
+        <input type="file" name="resumes" multiple required>
+        <button type="submit">Analyze Resumes</button>
     </form>
-
-    {% if score %}
-        <div class="result score">
-            Resume Score: {{ score }}%
-        </div>
-    {% endif %}
-
-    <footer>
-        Smart Hiring • Automated Screening System
-    </footer>
 </div>
+
+<div class="results">
+{% for c in candidates %}
+    <div class="card {% if loop.index == 1 %}top{% endif %}">
+        <h3>{{loop.index}}. {{c.name}}</h3>
+
+        <div class="circle">{{c.score}}%</div>
+
+        <div class="progress">
+            <div class="bar" style="width: {{c.score}}%;"></div>
+        </div>
+
+        <p><strong>Decision:</strong> {{c.decision}}</p>
+
+        <div>
+            {% for skill in c.skills %}
+                <span class="badge">{{skill}}</span>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<script>
+    const intro = document.getElementById("intro");
+
+    for (let i = 0; i < 25; i++) {
+        let d = document.createElement("div");
+        d.className = "dot";
+        d.style.top = Math.random()*100 + "%";
+        d.style.left = Math.random()*100 + "%";
+        intro.appendChild(d);
+    }
+
+    setTimeout(() => intro.remove(), 2000);
+
+    function toggleTheme() {
+        document.body.classList.toggle("light");
+    }
+</script>
 
 </body>
 </html>
