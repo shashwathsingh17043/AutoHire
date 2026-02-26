@@ -45,7 +45,6 @@
             }
         }
 
-        /* MAIN LAYOUT */
         h1 {
             text-align: center;
             color: cyan;
@@ -83,7 +82,6 @@
             margin: 15px 0;
         }
 
-        /* CARDS */
         .results {
             width: 70%;
             margin: auto;
@@ -120,7 +118,6 @@
             background: linear-gradient(90deg, cyan, blue);
         }
 
-        /* CIRCULAR GAUGE */
         .circle {
             width: 80px;
             height: 80px;
@@ -132,7 +129,6 @@
             margin-top: 10px;
         }
 
-        /* SKILL BADGES */
         .badge {
             display: inline-block;
             padding: 5px 10px;
@@ -143,7 +139,6 @@
             font-size: 12px;
         }
 
-        /* THEME TOGGLE */
         .toggle {
             position: fixed;
             top: 20px;
@@ -159,7 +154,6 @@
             background: #f4f6f8;
             color: black;
         }
-
     </style>
 </head>
 
@@ -202,7 +196,6 @@
 </div>
 
 <script>
-    /* INTRO DOT MERGE EFFECT */
     const intro = document.getElementById("intro");
 
     for (let i = 0; i < 25; i++) {
@@ -215,7 +208,6 @@
 
     setTimeout(() => intro.remove(), 2000);
 
-    /* THEME TOGGLE */
     function toggleTheme() {
         document.body.classList.toggle("light");
     }
