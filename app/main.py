@@ -32,7 +32,7 @@ def index():
             skills = extract_skills(text.lower())
             score = calculate_score(skills, ["python", "sql", "django"])
             decision = hiring_decision(score)
-
+# Dev branch change - deployment setup coming
             candidates.append({
                 "name": file.filename,
                 "score": score,
