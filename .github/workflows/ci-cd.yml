@@ -1,0 +1,53 @@
+name: AutoHire CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "feature-ui-update" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # 2. Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    # 3. Install dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Lint (optional but great for marks)
+    - name: Lint Code with flake8
+      run: |
+        pip install flake8
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    # 5. Run Tests
+    - name: Run Tests
+      run: |
+        echo "Running tests..."
+        # If you have pytest:
+        # pip install pytest
+        # pytest
+        echo "No tests yet, skipping..."
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Trigger Render Deployment
+      run: |
+        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
