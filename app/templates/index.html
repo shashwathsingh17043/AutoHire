@@ -52,7 +52,7 @@
         }
 
         .upload-box {
-            width: 480px;
+            width: 500px;
             margin: 30px auto;
             padding: 25px;
             border-radius: 14px;
@@ -60,6 +60,15 @@
             backdrop-filter: blur(15px);
             text-align: center;
             box-shadow: 0 0 25px rgba(0,255,255,0.15);
+        }
+
+        select, input {
+            margin: 10px 0;
+        }
+
+        label {
+            display: inline-block;
+            margin: 5px;
         }
 
         button {
@@ -76,10 +85,6 @@
         button:hover {
             transform: scale(1.03);
             box-shadow: 0 0 20px cyan;
-        }
-
-        input {
-            margin: 15px 0;
         }
 
         .results {
@@ -167,9 +172,37 @@
 
 <div class="upload-box">
     <h3>Upload Candidate Resumes</h3>
+
     <form method="POST" enctype="multipart/form-data">
+
+        <!-- ROLE SELECTION -->
+        <h3>Select Job Role</h3>
+        <select name="role">
+            <option value="devops">DevOps Engineer</option>
+            <option value="backend">Backend Developer</option>
+            <option value="frontend">Frontend Developer</option>
+            <option value="ml">ML Engineer</option>
+        </select>
+
+        <!-- SKILLS -->
+        <h3>Select Required Skills</h3>
+
+        <label><input type="checkbox" name="skills" value="python"> Python</label>
+        <label><input type="checkbox" name="skills" value="docker"> Docker</label>
+        <label><input type="checkbox" name="skills" value="kubernetes"> Kubernetes</label>
+        <label><input type="checkbox" name="skills" value="aws"> AWS</label>
+        <label><input type="checkbox" name="skills" value="java"> Java</label>
+        <label><input type="checkbox" name="skills" value="react"> React</label>
+
+        <br><br>
+
+        <!-- FILE UPLOAD -->
         <input type="file" name="resumes" multiple required>
+
+        <br><br>
+
         <button type="submit">Analyze Resumes</button>
+
     </form>
 </div>
 
@@ -214,4 +247,4 @@
 </script>
 
 </body>
-</html>
+</html> 
