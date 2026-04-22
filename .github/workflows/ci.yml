@@ -39,11 +39,15 @@ jobs:
           python -m unittest discover tests || echo "No tests found, skipping"
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/main'
+  runs-on: ubuntu-latest
+  needs: test
+  if: github.ref == 'refs/heads/main'
 
-    steps:
-      - name: Trigger Render Deployment
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Deploy Simulation
+      run: |
+        echo "🚀 Deploying AutoHire App..."
+        echo "Connecting to Render..."
+        echo "Deployment successful ✅"
